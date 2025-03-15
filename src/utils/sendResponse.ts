@@ -1,9 +1,9 @@
-import { Response } from "express"
+import { Response } from "express";
 
 interface ISuccessResponse<T> {
-  status: boolean
-  message: string
-  data: T | T[] | null
+  status: boolean;
+  message: string;
+  data: T | T[] | null;
 }
 
 const sendResponse = <T>(res: Response, data: ISuccessResponse<T>) => {
@@ -11,7 +11,7 @@ const sendResponse = <T>(res: Response, data: ISuccessResponse<T>) => {
     status: true,
     message: data.message,
     data: data.data,
-  })
-}
+  });
+};
 
-export default sendResponse
+export default sendResponse;
