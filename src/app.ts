@@ -3,6 +3,7 @@ import express, { Application, NextFunction, Request, Response } from "express";
 import cors from "cors";
 import userRouter from "./modules/user/user.router";
 import { StatusCodes } from "http-status-codes";
+import authRouter from "./modules/auth/auth.router";
 
 const app: Application = express();
 
@@ -12,7 +13,9 @@ app.use(
     credentials: true,
   })
 );
+
 app.use(express.json());
+app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 
 app.get("/", (req: Request, res: Response) => {
