@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import express, { Application, NextFunction, Request, Response } from "express";
+import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import userRouter from "./modules/user/user.router";
-import { StatusCodes } from "http-status-codes";
 import authRouter from "./modules/auth/auth.router";
+import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 
 const app: Application = express();
 
@@ -22,11 +21,6 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Server is live⚡");
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  res
-    .status(StatusCodes.INTERNAL_SERVER_ERROR)
-    .json({ success: false, message: err.message, error: err });
-});
+app.use(globalErrorHandler);
 
 export default app;
