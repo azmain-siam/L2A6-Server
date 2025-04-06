@@ -10,5 +10,6 @@ productRouter.post(
   validateRequest(ProductValidation.productValidationSchema),
   ProductController.addProduct
 );
+productRouter.put("/:productId", ProductController.updateProduct);
 
 export default productRouter;

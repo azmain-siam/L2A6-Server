@@ -7,6 +7,16 @@ const addProduct = async (payload: IProduct) => {
   return result;
 };
 
+const updateProduct = async (productId: string, data: Partial<IProduct>) => {
+  const result = await Product.findByIdAndUpdate(productId, data, {
+    new: true,
+    runValidators: true,
+  });
+
+  return result;
+};
+
 export const ProductService = {
   addProduct,
+  updateProduct,
 };
