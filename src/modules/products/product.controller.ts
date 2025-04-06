@@ -36,7 +36,28 @@ const updateProduct = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteSpecificProduct = catchAsync(
+  async (req: Request, res: Response) => {
+    const { productId } = req.params;
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      throw new Error("Product not found!");
+    }
+
+    const result = await ProductService.deleteSpecificProduct(productId);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: StatusCodes.OK,
+      message: "Product deleted successfully",
+      data: result,
+    });
+  }
+);
+
 export const ProductController = {
   addProduct,
   updateProduct,
+  deleteSpecificProduct,
 };

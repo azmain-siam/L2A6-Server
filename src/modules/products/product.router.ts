@@ -11,5 +11,6 @@ productRouter.post(
   ProductController.addProduct
 );
 productRouter.put("/:productId", ProductController.updateProduct);
+productRouter.delete("/:productId", ProductController.deleteSpecificProduct);
 
 export default productRouter;

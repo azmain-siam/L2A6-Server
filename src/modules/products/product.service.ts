@@ -16,7 +16,14 @@ const updateProduct = async (productId: string, data: Partial<IProduct>) => {
   return result;
 };
 
+const deleteSpecificProduct = async (productId: string) => {
+  const result = await Product.findByIdAndDelete(productId);
+
+  return result;
+};
+
 export const ProductService = {
   addProduct,
   updateProduct,
+  deleteSpecificProduct,
 };
