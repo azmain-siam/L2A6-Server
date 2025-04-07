@@ -5,6 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import mongoose from "mongoose";
 
 interface IErrorResponse {
+  statusCode: number;
   success: boolean;
   message: string;
   error: any;
@@ -22,7 +23,7 @@ export const globalErrorHandler = (
       .json({ success: false, message: err.message, error: err });
   } else if (err instanceof Error) {
     res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .status(err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ success: false, message: err.message, error: err });
   }
 };

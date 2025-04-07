@@ -1,3 +1,5 @@
+import { StatusCodes } from "http-status-codes";
+import AppError from "../../error/AppError";
 import { IUser } from "../user/user.interface";
 import User from "../user/user.model";
 import { ILogin } from "./auth.interface";
@@ -13,13 +15,13 @@ const login = async (payload: ILogin) => {
   const user = await User.findOne({ email: payload.email });
 
   if (!user) {
-    throw new Error("User not found");
+    throw new AppError(StatusCodes.NOT_FOUND, "User not found");
   }
 
   const isPasswordMatch = await bcrypt.compare(payload.password, user.password);
 
   if (!isPasswordMatch) {
-    throw new Error("Password doesn't match");
+    throw new AppError(StatusCodes.BAD_REQUEST, "Password doesn't match");
   }
 
   const jwtPayload = {

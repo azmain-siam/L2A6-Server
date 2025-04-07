@@ -4,6 +4,7 @@ import { ProductService } from "./product.service";
 import sendResponse from "../../utils/sendResponse";
 import { StatusCodes } from "http-status-codes";
 import Product from "./product.model";
+import AppError from "../../error/AppError";
 
 const addProduct = catchAsync(async (req: Request, res: Response) => {
   const result = await ProductService.addProduct(req.body);
@@ -23,7 +24,7 @@ const updateProduct = catchAsync(async (req: Request, res: Response) => {
   const product = await Product.findById(productId);
 
   if (!product) {
-    throw new Error("Product not found!");
+    throw new AppError(StatusCodes.NOT_FOUND, "Product not found!");
   }
 
   const result = await ProductService.updateProduct(productId, req.body);
@@ -42,14 +43,14 @@ const deleteSpecificProduct = catchAsync(
     const product = await Product.findById(productId);
 
     if (!product) {
-      throw new Error("Product not found!");
+      throw new AppError(StatusCodes.NOT_FOUND, "Product not found!");
     }
 
     const result = await ProductService.deleteSpecificProduct(productId);
 
     sendResponse(res, {
       success: true,
-      statusCode: StatusCodes.OK,
+      statusCode: StatusCodes.NO_CONTENT,
       message: "Product deleted successfully",
       data: result,
     });
