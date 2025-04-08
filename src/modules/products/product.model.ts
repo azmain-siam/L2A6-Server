@@ -18,10 +18,10 @@ const productSchema = new Schema<IProduct>(
       required: true,
       default: "available",
     },
-  },
-  {
-    timestamps: true,
   }
+  // {
+  //   timestamps: true,
+  // }
 );
 
 const Product = model("Product", productSchema);

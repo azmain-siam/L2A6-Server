@@ -4,7 +4,7 @@ import { ProductService } from "./product.service";
 import sendResponse from "../../utils/sendResponse";
 import { StatusCodes } from "http-status-codes";
 import Product from "./product.model";
-import AppError from "../../error/AppError";
+import AppError from "../../errors/AppError";
 
 const addProduct = catchAsync(async (req: Request, res: Response) => {
   const result = await ProductService.addProduct(req.body);
