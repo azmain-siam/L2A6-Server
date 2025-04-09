@@ -11,7 +11,7 @@ const transactionValidationSchema = z.object({
   itemID: z.string().refine((val) => Types.ObjectId.isValid(val), {
     message: "Invalid itemID",
   }),
-  status: z.enum(["pending", "completed"]),
+  status: z.enum(["pending", "completed"]).default("pending"),
 });
 
 export const TransactionValidation = {
