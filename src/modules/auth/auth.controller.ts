@@ -4,6 +4,7 @@ import sendResponse from "../../utils/sendResponse";
 import User from "../user/user.model";
 import { StatusCodes } from "http-status-codes";
 import { AuthService } from "./auth.service";
+import AppError from "../../errors/AppError";
 
 const register = catchAsync(async (req: Request, res: Response) => {
   let user;
@@ -17,11 +18,15 @@ const register = catchAsync(async (req: Request, res: Response) => {
   }
 
   if (user) {
-    sendResponse(res, {
-      success: false,
-      statusCode: StatusCodes.BAD_REQUEST,
-      message: "Email or Phone already registered",
-    });
+    // sendResponse(res, {
+    //   success: false,
+    //   statusCode: StatusCodes.BAD_REQUEST,
+    //   message: "Email or Phone already registered",
+    // });
+    throw new AppError(
+      StatusCodes.BAD_REQUEST,
+      "Email or Phone already registered"
+    );
   }
 
   const result = await AuthService.register(req.body);
