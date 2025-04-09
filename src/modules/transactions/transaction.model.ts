@@ -1,16 +1,18 @@
 import { model, Schema } from "mongoose";
+import { ITransaction } from "./transaction.interface";
 
-const transactionSchema = new Schema(
+const transactionSchema = new Schema<ITransaction>(
   {
-    senderId: { type: Schema.ObjectId, required: true },
-    receiverId: { type: Schema.ObjectId, required: true },
-    message: { type: String, required: true },
+    buyerID: { type: Schema.ObjectId, ref: "User", required: true },
+    sellerID: { type: Schema.ObjectId, ref: "User", required: true },
+    itemID: { type: Schema.ObjectId, ref: "Listing", required: true },
+    status: { type: String, enum: ["pending", "completed"], required: true },
   },
   {
     timestamps: true,
   }
 );
 
-const Transaction = model("Transaction", transactionSchema);
+const Transaction = model<ITransaction>("Transaction", transactionSchema);
 
 export default Transaction;

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const productValidationSchema = z.object({
+const listingValidationSchema = z.object({
   title: z.string({ required_error: "Title is required and must be string" }),
   description: z.string({
     required_error: "Description is required and must be string",
@@ -13,6 +13,6 @@ const productValidationSchema = z.object({
   userId: z.string(),
 });
 
-export const ProductValidation = {
-  productValidationSchema,
+export const ListingValidation = {
+  listingValidationSchema,
 };

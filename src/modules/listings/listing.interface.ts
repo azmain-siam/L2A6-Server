@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 
-export interface IProduct {
+export interface IListing {
   title: string;
   description: string;
   price: number;

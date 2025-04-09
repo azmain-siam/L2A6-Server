@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
-import { IProduct } from "./product.interface";
+import { IListing } from "./listing.interface";
 
-const productSchema = new Schema<IProduct>(
+const listingSchema = new Schema<IListing>(
   {
     title: { type: String, required: [true, "Product title is required"] },
     description: {
@@ -24,6 +24,6 @@ const productSchema = new Schema<IProduct>(
   // }
 );
 
-const Product = model("Product", productSchema);
+const Listing = model("Listing", listingSchema);
 
-export default Product;
+export default Listing;
