@@ -8,6 +8,7 @@ import jwt from "jsonwebtoken";
 
 const register = async (payload: IUser) => {
   const result = await User.create(payload);
+
   return result;
 };
 

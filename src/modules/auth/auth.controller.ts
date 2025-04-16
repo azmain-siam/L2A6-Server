@@ -18,11 +18,6 @@ const register = catchAsync(async (req: Request, res: Response) => {
   }
 
   if (user) {
-    // sendResponse(res, {
-    //   success: false,
-    //   statusCode: StatusCodes.BAD_REQUEST,
-    //   message: "Email or Phone already registered",
-    // });
     throw new AppError(
       StatusCodes.BAD_REQUEST,
       "Email or Phone already registered"
@@ -42,9 +37,10 @@ const register = catchAsync(async (req: Request, res: Response) => {
 const login = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.login(req.body);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { refreshToken, accessToken } = result;
 
-  res.cookie("refreshToken", refreshToken, {
+  res.cookie("accessToken", accessToken, {
     httpOnly: true,
     secure: true,
   });
@@ -53,7 +49,7 @@ const login = catchAsync(async (req: Request, res: Response) => {
     success: true,
     statusCode: StatusCodes.OK,
     message: "Login successful",
-    data: accessToken,
+    data: { accessToken },
   });
 });
 
