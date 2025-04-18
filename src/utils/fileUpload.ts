@@ -29,7 +29,6 @@ export const sendImageToCloudinary = (path: string, id: string) => {
       },
       (error, result) => {
         fs.unlinkSync(path);
-
         if (error) {
           reject(error);
         }

@@ -8,8 +8,10 @@ const listingRouter = Router();
 
 listingRouter.post(
   "/",
-  upload.single("file"),
+  // upload.single("file"),
+  upload.array("file", 12),
   (req: Request, res: Response, next: NextFunction) => {
+    // console.log(req.files);
     const body = req.body.data;
     req.body = JSON.parse(body);
     next();

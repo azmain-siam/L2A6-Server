@@ -9,13 +9,23 @@ import { sendImageToCloudinary } from "../../utils/fileUpload";
 
 const addProduct = catchAsync(async (req: Request, res: Response) => {
   const body = req.body;
+  const imageUrls: string[] = [];
+  const files = req.files;
 
-  if (req.file) {
-    const path = req.file.path;
-    const { secure_url } = (await sendImageToCloudinary(path, "listing")) as {
-      secure_url: string;
-    };
-    body.images = [secure_url];
+  if (!files) {
+    throw new AppError(StatusCodes.BAD_REQUEST, "Images is required");
+  }
+
+  if (req.files && Array.isArray(req.files)) {
+    for (const file of req.files) {
+      const path = file.path;
+      const { secure_url } = (await sendImageToCloudinary(path, "listing")) as {
+        secure_url: string;
+      };
+      // console.log(secure_url);
+      imageUrls.push(secure_url);
+    }
+    body.images = imageUrls;
   }
 
   const result = await ListingService.addProduct(body);
