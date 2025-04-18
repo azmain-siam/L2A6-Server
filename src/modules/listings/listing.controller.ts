@@ -9,7 +9,7 @@ import { sendImageToCloudinary } from "../../utils/fileUpload";
 
 const addProduct = catchAsync(async (req: Request, res: Response) => {
   const body = req.body;
-  // console.log(req.body);
+
   if (req.file) {
     const path = req.file.path;
     const { secure_url } = (await sendImageToCloudinary(path, "listing")) as {

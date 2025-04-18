@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { NextFunction, Request, Response, Router } from "express";
 import validateRequest from "../../middlewares/validateRequest";
 import { ListingValidation } from "./listing.validation";
 import { ListingController } from "./listing.controller";
@@ -9,7 +9,12 @@ const listingRouter = Router();
 listingRouter.post(
   "/",
   upload.single("file"),
-  // validateRequest(ListingValidation.listingValidationSchema),
+  (req: Request, res: Response, next: NextFunction) => {
+    const body = req.body.data;
+    req.body = JSON.parse(body);
+    next();
+  },
+  validateRequest(ListingValidation.listingValidationSchema),
   ListingController.addProduct
 );
 listingRouter.put("/:id", ListingController.updateProduct);
