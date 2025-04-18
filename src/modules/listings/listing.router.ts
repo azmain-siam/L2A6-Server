@@ -9,7 +9,7 @@ const listingRouter = Router();
 listingRouter.post(
   "/",
   upload.single("file"),
-  validateRequest(ListingValidation.listingValidationSchema),
+  // validateRequest(ListingValidation.listingValidationSchema),
   ListingController.addProduct
 );
 listingRouter.put("/:id", ListingController.updateProduct);

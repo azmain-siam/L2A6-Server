@@ -5,9 +5,20 @@ import sendResponse from "../../utils/sendResponse";
 import { StatusCodes } from "http-status-codes";
 import Listing from "./listing.model";
 import AppError from "../../errors/AppError";
+import { sendImageToCloudinary } from "../../utils/fileUpload";
 
 const addProduct = catchAsync(async (req: Request, res: Response) => {
-  const result = await ListingService.addProduct(req.body);
+  const body = req.body;
+  // console.log(req.body);
+  if (req.file) {
+    const path = req.file.path;
+    const { secure_url } = (await sendImageToCloudinary(path, "listing")) as {
+      secure_url: string;
+    };
+    body.images = [secure_url];
+  }
+
+  const result = await ListingService.addProduct(body);
 
   sendResponse(res, {
     success: true,
