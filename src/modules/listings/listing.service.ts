@@ -7,6 +7,12 @@ const addProduct = async (payload: IListing) => {
   return result;
 };
 
+const getAllProducts = async () => {
+  const result = await Listing.find().populate("userId");
+
+  return result;
+};
+
 const updateProduct = async (productId: string, data: Partial<IListing>) => {
   const result = await Listing.findByIdAndUpdate(productId, data, {
     new: true,
@@ -26,4 +32,5 @@ export const ListingService = {
   addProduct,
   updateProduct,
   deleteSpecificProduct,
+  getAllProducts,
 };

@@ -19,6 +19,7 @@ listingRouter.post(
   validateRequest(ListingValidation.listingValidationSchema),
   ListingController.addProduct
 );
+listingRouter.get("/", ListingController.getAllProducts);
 listingRouter.put("/:id", ListingController.updateProduct);
 listingRouter.delete("/:id", ListingController.deleteSpecificProduct);
 
