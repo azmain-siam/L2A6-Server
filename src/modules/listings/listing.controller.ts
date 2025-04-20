@@ -12,7 +12,7 @@ const addProduct = catchAsync(async (req: Request, res: Response) => {
   const imageUrls: string[] = [];
   const files = req.files;
 
-  if (!files) {
+  if (!Array.isArray(files) || files.length < 1) {
     throw new AppError(StatusCodes.BAD_REQUEST, "Images is required");
   }
 
