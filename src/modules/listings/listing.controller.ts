@@ -49,9 +49,23 @@ const getAllProducts = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getSingleProduct = catchAsync(async (req: Request, res: Response) => {
+  const { productId } = req.params;
+  const result = await ListingService.getSingleProduct(productId);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: "Product retrieved successfully",
+    data: result,
+  });
+});
+
 const updateProduct = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  // console.log("Product id =>", productId);
+  const body = JSON.parse(req.body.data);
+  const imageUrls: string[] = [];
+  const files = req.files;
 
   const product = await Listing.findById(id);
 
@@ -59,7 +73,23 @@ const updateProduct = catchAsync(async (req: Request, res: Response) => {
     throw new AppError(StatusCodes.NOT_FOUND, "Product not found!");
   }
 
-  const result = await ListingService.updateProduct(id, req.body);
+  if (!Array.isArray(files) || files.length < 1) {
+    body.images = product.images;
+  }
+
+  if (files && Array.isArray(files) && files.length > 0) {
+    for (const file of files) {
+      const path = file.path;
+      const { secure_url } = (await sendImageToCloudinary(path, "listing")) as {
+        secure_url: string;
+      };
+      // console.log(secure_url);
+      imageUrls.push(secure_url);
+    }
+    body.images = imageUrls;
+  }
+
+  const result = await ListingService.updateProduct(id, body);
 
   sendResponse(res, {
     success: true,
@@ -92,6 +122,7 @@ const deleteSpecificProduct = catchAsync(
 export const ListingController = {
   addProduct,
   getAllProducts,
+  getSingleProduct,
   updateProduct,
   deleteSpecificProduct,
 };

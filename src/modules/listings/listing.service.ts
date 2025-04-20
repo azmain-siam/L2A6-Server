@@ -13,6 +13,12 @@ const getAllProducts = async () => {
   return result;
 };
 
+const getSingleProduct = async (productId: string) => {
+  const result = await Listing.findById(productId).populate("userId");
+
+  return result;
+};
+
 const updateProduct = async (productId: string, data: Partial<IListing>) => {
   const result = await Listing.findByIdAndUpdate(productId, data, {
     new: true,
@@ -33,4 +39,5 @@ export const ListingService = {
   updateProduct,
   deleteSpecificProduct,
   getAllProducts,
+  getSingleProduct,
 };

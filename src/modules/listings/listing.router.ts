@@ -8,10 +8,8 @@ const listingRouter = Router();
 
 listingRouter.post(
   "/",
-  // upload.single("file"),
   upload.array("file", 12),
   (req: Request, res: Response, next: NextFunction) => {
-    // console.log(req.files);
     const body = req.body.data;
     req.body = JSON.parse(body);
     next();
@@ -19,8 +17,17 @@ listingRouter.post(
   validateRequest(ListingValidation.listingValidationSchema),
   ListingController.addProduct
 );
+
 listingRouter.get("/", ListingController.getAllProducts);
-listingRouter.put("/:id", ListingController.updateProduct);
+
+listingRouter.get("/:productId", ListingController.getSingleProduct);
+
+listingRouter.put(
+  "/:id",
+  upload.array("file", 12),
+  ListingController.updateProduct
+);
+
 listingRouter.delete("/:id", ListingController.deleteSpecificProduct);
 
 export default listingRouter;
