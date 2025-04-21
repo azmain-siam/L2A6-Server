@@ -11,7 +11,7 @@ const userSchema = new Schema<IUser>(
       required: [true, "Please provide your email"],
       unique: true,
     },
-    password: { type: String, required: true, select: false },
+    password: { type: String, required: true },
     phone: { type: String, required: [true, "Please provide your number"] },
     role: {
       type: String,
