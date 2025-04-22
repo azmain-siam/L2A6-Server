@@ -7,6 +7,7 @@ import listingRouter from "./modules/listings/listing.router";
 import transactionRouter from "./modules/transactions/transaction.router";
 import purchaseRouter from "./modules/purchase/purchase.router";
 import salesRouter from "./modules/sales/sales.router";
+import cartRouter from "./modules/cart/cart.router";
 
 const app: Application = express();
 
@@ -24,6 +25,7 @@ app.use("/api/listings", listingRouter);
 app.use("/api/transactions", transactionRouter);
 app.use("/api/purchases", purchaseRouter);
 app.use("/api/sales", salesRouter);
+app.use("/api/cart", cartRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Server is live⚡");
