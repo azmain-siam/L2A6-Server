@@ -19,6 +19,7 @@ listingRouter.post(
 );
 
 listingRouter.get("/", ListingController.getAllProducts);
+listingRouter.get("/user/:userId", ListingController.getAllProductsByUserId);
 
 listingRouter.get("/:productId", ListingController.getSingleProduct);
 

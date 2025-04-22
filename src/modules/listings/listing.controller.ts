@@ -49,6 +49,20 @@ const getAllProducts = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getAllProductsByUserId = catchAsync(
+  async (req: Request, res: Response) => {
+    const { userId } = req.params;
+    const result = await ListingService.getAllProductsByUserId(userId);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: StatusCodes.OK,
+      message: "Products retrieved successfully",
+      data: result,
+    });
+  }
+);
+
 const getSingleProduct = catchAsync(async (req: Request, res: Response) => {
   const { productId } = req.params;
   const result = await ListingService.getSingleProduct(productId);
@@ -125,4 +139,5 @@ export const ListingController = {
   getSingleProduct,
   updateProduct,
   deleteSpecificProduct,
+  getAllProductsByUserId,
 };

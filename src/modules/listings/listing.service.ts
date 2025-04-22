@@ -13,6 +13,12 @@ const getAllProducts = async () => {
   return result;
 };
 
+const getAllProductsByUserId = async (userId: string) => {
+  const result = await Listing.find({ userId: userId });
+
+  return result;
+};
+
 const getSingleProduct = async (productId: string) => {
   const result = await Listing.findById(productId).populate("userId");
 
@@ -40,4 +46,5 @@ export const ListingService = {
   deleteSpecificProduct,
   getAllProducts,
   getSingleProduct,
+  getAllProductsByUserId,
 };

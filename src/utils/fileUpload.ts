@@ -4,7 +4,11 @@ import fs from "fs";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./uploads");
+    const path = "../uploads";
+    if (!fs.existsSync(path)) {
+      fs.mkdirSync(path, { recursive: true });
+    }
+    cb(null, path);
   },
   filename: (req, file, cb) => {
     const filename = Date.now() + "_" + file.originalname.split(" ").join("_");
