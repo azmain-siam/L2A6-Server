@@ -15,6 +15,19 @@ const addToCart = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const removeCartItems = catchAsync(async (req: Request, res: Response) => {
+  const { itemId } = req.body;
+  const { userId } = req.params;
+  const result = await CartServices.removeCartItems(userId, itemId);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: "Item removed!",
+    data: result,
+  });
+});
+
 const getCartItemsByUser = catchAsync(async (req: Request, res: Response) => {
   const result = await CartServices.getCartItemsByUser(req.params.userId);
 
@@ -29,4 +42,5 @@ const getCartItemsByUser = catchAsync(async (req: Request, res: Response) => {
 export const CartController = {
   addToCart,
   getCartItemsByUser,
+  removeCartItems,
 };

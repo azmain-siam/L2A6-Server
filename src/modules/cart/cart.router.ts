@@ -11,5 +11,6 @@ cartRouter.post(
   CartController.addToCart
 );
 cartRouter.get("/:userId", CartController.getCartItemsByUser);
+cartRouter.delete("/:userId", CartController.removeCartItems);
 
 export default cartRouter;

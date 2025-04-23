@@ -4,6 +4,7 @@ import { IListing } from "../listings/listing.interface";
 import Listing from "../listings/listing.model";
 import { IAddCart } from "./cart.interface";
 import Cart from "./cart.model";
+import { Types } from "mongoose";
 
 const addToCart = async (payload: IAddCart) => {
   const { user, productId } = payload;
@@ -42,6 +43,42 @@ const addToCart = async (payload: IAddCart) => {
   return result;
 };
 
+// const removeCartItems = async (userId: string, itemId: string) => {
+//   const cart = await Cart.findOne({ user: userId });
+
+//   if (!cart) {
+//     throw new AppError(StatusCodes.NOT_FOUND, "Cart not found!");
+//   }
+
+//   const newItems = cart.items.filter((item) => item.toString() !== itemId);
+
+//   const result = await Cart.findOneAndUpdate(
+//     { user: userId },
+//     { $set: { items: newItems } },
+//     {
+//       new: true,
+//     }
+//   );
+
+//   return result;
+// };
+
+const removeCartItems = async (userId: string, itemId: string) => {
+  const itemObjectId = new Types.ObjectId(itemId);
+
+  const updatedCart = await Cart.findOneAndUpdate(
+    { user: userId },
+    { $pull: { items: itemObjectId } },
+    { new: true }
+  );
+
+  if (!updatedCart) {
+    throw new AppError(StatusCodes.NOT_FOUND, "Cart not found!");
+  }
+
+  return updatedCart;
+};
+
 const getCartItemsByUser = async (userId: string) => {
   const result = await Cart.findOne({ user: userId }).populate("items");
 
@@ -50,5 +87,6 @@ const getCartItemsByUser = async (userId: string) => {
 
 export const CartServices = {
   addToCart,
+  removeCartItems,
   getCartItemsByUser,
 };
