@@ -5,6 +5,7 @@ import sendResponse from "../../utils/sendResponse";
 import { StatusCodes } from "http-status-codes";
 
 const createTransaction = catchAsync(async (req: Request, res: Response) => {
+  // console.log(req, "requset");
   const result = await TransactionService.createTransaction(req.body);
 
   sendResponse(res, {
