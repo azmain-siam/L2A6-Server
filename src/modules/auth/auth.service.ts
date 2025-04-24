@@ -29,6 +29,7 @@ const login = async (payload: ILogin) => {
     email: user.email,
     name: user.name,
     role: user.role,
+    phone: user.phone,
   };
 
   const accessToken = jwt.sign(jwtPayload, "secret", {

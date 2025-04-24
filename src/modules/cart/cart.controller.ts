@@ -10,7 +10,7 @@ const addToCart = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     success: true,
     statusCode: StatusCodes.CREATED,
-    message: "Item added to cart",
+    message: "Item added to the wishlist!",
     data: result,
   });
 });
