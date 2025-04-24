@@ -1,18 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { StatusCodes } from "http-status-codes";
 import AppError from "../../errors/AppError";
-import Listing from "../listings/listing.model";
 import Transaction from "./transaction.model";
 import stripeCheckout from "../../utils/stripe-pay";
 import { IListing } from "../listings/listing.interface";
+import Listing from "../listings/listing.model";
 
 const createTransaction = async (payload: any) => {
   const { items, buyerId, amounts } = payload;
 
-  // 1. Check availability & build Stripe line items
+  // Check availability & build Stripe line items
   const lineItems = await Promise.all(
     items.map(async (item: IListing) => {
-      console.log(item.status);
       if (item.status === "sold") {
         throw new AppError(StatusCodes.BAD_REQUEST, "Item(s) not available");
       }
@@ -31,7 +30,7 @@ const createTransaction = async (payload: any) => {
     })
   );
 
-  // 2. Add platform fee
+  // Add platform fee
   lineItems.push({
     price_data: {
       currency: "usd",
@@ -43,15 +42,10 @@ const createTransaction = async (payload: any) => {
     quantity: 1,
   });
 
-  // 3. Create Stripe session
-  const sessionId = await stripeCheckout(lineItems);
-
-  // 4. Mark items as sold and collect transaction records
+  // Mark items as sold and collect transaction records
   const transactionItems = await Promise.all(
     items.map(async (item: IListing) => {
-      if (sessionId) {
-        await Listing.findByIdAndUpdate(item._id, { status: "sold" });
-      }
+      // await Listing.findByIdAndUpdate(item._id, { status: "sold" });
 
       return {
         buyerID: buyerId,
@@ -61,19 +55,42 @@ const createTransaction = async (payload: any) => {
     })
   );
 
-  // 5. Save transaction record
+  // Save transaction record
   const transaction = await Transaction.create({
-    transaction: transactionItems,
-    status: sessionId ? "completed" : "pending",
+    transactionInfo: transactionItems,
+    status: "pending",
   });
 
-  // 6. Return final result
+  // Create Stripe session
+  const sessionId = await stripeCheckout(lineItems, transaction._id.toString());
+
   return {
     data: transaction,
     sessionId,
   };
 };
 
+const completeTransaction = async (transactionId: string) => {
+  const transaction = await Transaction.findByIdAndUpdate(
+    transactionId,
+    {
+      status: "completed",
+    },
+    { new: true }
+  );
+
+  transaction?.transactionInfo.forEach(async (transaction) => {
+    await Listing.findByIdAndUpdate(
+      transaction.itemID,
+      { status: "sold" },
+      { new: true }
+    );
+  });
+
+  return transaction;
+};
+
 export const TransactionService = {
   createTransaction,
+  completeTransaction,
 };

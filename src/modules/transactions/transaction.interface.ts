@@ -8,7 +8,7 @@ interface transaction {
 }
 
 export interface ITransaction {
-  transaction: transaction[];
+  transactionInfo: transaction[];
   status: "pending" | "completed";
 }
 

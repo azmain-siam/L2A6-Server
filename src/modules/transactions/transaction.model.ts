@@ -2,7 +2,7 @@ import { model, Schema } from "mongoose";
 import { ITransaction } from "./transaction.interface";
 
 const transactionSchema = new Schema<ITransaction>({
-  transaction: [
+  transactionInfo: [
     {
       buyerID: { type: Schema.ObjectId, ref: "User", required: true },
       sellerID: { type: Schema.ObjectId, ref: "User", required: true },

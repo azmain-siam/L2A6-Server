@@ -8,5 +8,10 @@ transactionRouter.post(
   // validateRequest(TransactionValidation.transactionValidationSchema),
   TransactionController.createTransaction
 );
+transactionRouter.put(
+  "/:transactionId",
+  // validateRequest(TransactionValidation.transactionValidationSchema),
+  TransactionController.completeTransaction
+);
 
 export default transactionRouter;

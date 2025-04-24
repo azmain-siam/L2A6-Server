@@ -16,6 +16,19 @@ const createTransaction = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const completeTransaction = catchAsync(async (req: Request, res: Response) => {
+  const { transactionId } = req.params;
+  const result = await TransactionService.completeTransaction(transactionId);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: "Transaction Completed successfully",
+    data: result,
+  });
+});
+
 export const TransactionController = {
   createTransaction,
+  completeTransaction,
 };

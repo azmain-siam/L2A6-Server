@@ -4,15 +4,24 @@ import config from "../config";
 
 const stripe = new Stripe(config.stripe_secret as string);
 
-const stripeCheckout = async (lineItems: any) => {
+const stripeCheckout = async (lineItems: any, transactionId: string) => {
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     line_items: lineItems,
     mode: "payment",
-    success_url: "https://dashboard.stripe.com/",
-    cancel_url: "https://dashboard.stripe.com/",
+    success_url: `http://localhost:3000/payment/success?session_id={CHECKOUT_SESSION_ID}&transactionId=${transactionId}`,
+    cancel_url:
+      "http://localhost:3000/payment/error?session_id={CHECKOUT_SESSION_ID}",
   });
   return session.id;
 };
+
+// const stripeSession = async () => {
+//   const session = await stripe.checkout.sessions.retrieve(
+//     "cs_test_b1wu957UZbZAo6ylALi1US7zJwrbzFhewirzupZP7oo66nNmx2M6zVGtkp"
+//   );
+// };
+
+// stripeSession();
 
 export default stripeCheckout;
