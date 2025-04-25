@@ -37,7 +37,7 @@ listingRouter.put(
 listingRouter.put(
   "/:id",
   upload.array("file", 12),
-  auth(["User"]),
+  // auth(["User"]),
   ListingController.updateProduct
 );
 

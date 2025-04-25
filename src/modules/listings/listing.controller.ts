@@ -5,27 +5,13 @@ import sendResponse from "../../utils/sendResponse";
 import { StatusCodes } from "http-status-codes";
 import Listing from "./listing.model";
 import AppError from "../../errors/AppError";
-import { sendImageToCloudinary } from "../../utils/fileUpload";
+// import { sendImageToCloudinary } from "../../utils/fileUpload";
 
 const addProduct = catchAsync(async (req: Request, res: Response) => {
   const body = req.body;
-  const imageUrls: string[] = [];
-  const files = req.files;
 
-  if (!Array.isArray(files) || files.length < 1) {
-    throw new AppError(StatusCodes.BAD_REQUEST, "Images is required");
-  }
-
-  if (req.files && Array.isArray(req.files)) {
-    for (const file of req.files) {
-      const path = file.path;
-      const { secure_url } = (await sendImageToCloudinary(path, "listing")) as {
-        secure_url: string;
-      };
-      // console.log(secure_url);
-      imageUrls.push(secure_url);
-    }
-    body.images = imageUrls;
+  if (!body.images || !Array.isArray(body.images) || body.images.length < 1) {
+    throw new AppError(StatusCodes.BAD_REQUEST, "Images are required");
   }
 
   const result = await ListingService.addProduct(body);
@@ -77,9 +63,7 @@ const getSingleProduct = catchAsync(async (req: Request, res: Response) => {
 
 const updateProduct = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const body = JSON.parse(req.body.data);
-  const imageUrls: string[] = [];
-  const files = req.files;
+  const body = JSON.parse(req.body.data); // assuming body contains images field
 
   const product = await Listing.findById(id);
 
@@ -87,20 +71,9 @@ const updateProduct = catchAsync(async (req: Request, res: Response) => {
     throw new AppError(StatusCodes.NOT_FOUND, "Product not found!");
   }
 
-  if (!Array.isArray(files) || files.length < 1) {
+  // If images not sent in body, keep existing images
+  if (!body.images || !Array.isArray(body.images) || body.images.length < 1) {
     body.images = product.images;
-  }
-
-  if (files && Array.isArray(files) && files.length > 0) {
-    for (const file of files) {
-      const path = file.path;
-      const { secure_url } = (await sendImageToCloudinary(path, "listing")) as {
-        secure_url: string;
-      };
-      // console.log(secure_url);
-      imageUrls.push(secure_url);
-    }
-    body.images = imageUrls;
   }
 
   const result = await ListingService.updateProduct(id, body);
