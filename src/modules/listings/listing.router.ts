@@ -3,6 +3,7 @@ import validateRequest from "../../middlewares/validateRequest";
 import { ListingValidation } from "./listing.validation";
 import { ListingController } from "./listing.controller";
 import { upload } from "../../utils/fileUpload";
+import auth from "../../middlewares/auth";
 
 const listingRouter = Router();
 
@@ -19,18 +20,31 @@ listingRouter.post(
 );
 
 listingRouter.get("/", ListingController.getAllProducts);
-listingRouter.get("/user/:userId", ListingController.getAllProductsByUserId);
+listingRouter.get(
+  "/user/:userId",
+  auth(["User"]),
+  ListingController.getAllProductsByUserId
+);
 
 listingRouter.get("/:productId", ListingController.getSingleProduct);
 
-listingRouter.put("/status/:productId", ListingController.updateProductStatus);
+listingRouter.put(
+  "/status/:productId",
+  auth(["User"]),
+  ListingController.updateProductStatus
+);
 
 listingRouter.put(
   "/:id",
   upload.array("file", 12),
+  auth(["User"]),
   ListingController.updateProduct
 );
 
-listingRouter.delete("/:id", ListingController.deleteSpecificProduct);
+listingRouter.delete(
+  "/:id",
+  auth(["User"]),
+  ListingController.deleteSpecificProduct
+);
 
 export default listingRouter;
