@@ -23,6 +23,8 @@ listingRouter.get("/user/:userId", ListingController.getAllProductsByUserId);
 
 listingRouter.get("/:productId", ListingController.getSingleProduct);
 
+listingRouter.put("/status/:productId", ListingController.updateProductStatus);
+
 listingRouter.put(
   "/:id",
   upload.array("file", 12),

@@ -113,6 +113,18 @@ const updateProduct = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateProductStatus = catchAsync(async (req: Request, res: Response) => {
+  const { productId } = req.params;
+  const result = await ListingService.updateProductStatus(productId);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: "Product marked as sold!",
+    data: result,
+  });
+});
+
 const deleteSpecificProduct = catchAsync(
   async (req: Request, res: Response) => {
     const { id } = req.params;
@@ -140,4 +152,5 @@ export const ListingController = {
   updateProduct,
   deleteSpecificProduct,
   getAllProductsByUserId,
+  updateProductStatus,
 };

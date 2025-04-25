@@ -34,6 +34,18 @@ const updateProduct = async (productId: string, data: Partial<IListing>) => {
   return result;
 };
 
+const updateProductStatus = async (productId: string) => {
+  const result = await Listing.findByIdAndUpdate(
+    productId,
+    { status: "sold" },
+    {
+      new: true,
+    }
+  );
+
+  return result;
+};
+
 const deleteSpecificProduct = async (productId: string) => {
   const result = await Listing.findByIdAndDelete(productId);
 
@@ -47,4 +59,5 @@ export const ListingService = {
   getAllProducts,
   getSingleProduct,
   getAllProductsByUserId,
+  updateProductStatus,
 };
