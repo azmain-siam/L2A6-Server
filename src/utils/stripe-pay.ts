@@ -9,9 +9,8 @@ const stripeCheckout = async (lineItems: any, transactionId: string) => {
     payment_method_types: ["card"],
     line_items: lineItems,
     mode: "payment",
-    success_url: `http://localhost:3000/payment/success?session_id={CHECKOUT_SESSION_ID}&transactionId=${transactionId}`,
-    cancel_url:
-      "http://localhost:3000/payment/error?session_id={CHECKOUT_SESSION_ID}",
+    success_url: `${config.client_url}/payment/success?session_id={CHECKOUT_SESSION_ID}&transactionId=${transactionId}`,
+    cancel_url: `${config.client_url}/payment/error?session_id={CHECKOUT_SESSION_ID}&transactionId=${transactionId}`,
   });
   return session.id;
 };

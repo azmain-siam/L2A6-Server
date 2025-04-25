@@ -9,4 +9,5 @@ export default {
   bcrypt_salt_round: process.env.BCRYPT_SALT_ROUND,
   stripe_publishable: process.env.STRIPE_PUBLISHABLE,
   stripe_secret: process.env.STRIPE_SECRET,
+  client_url: process.env.CLIENT_URL,
 };
