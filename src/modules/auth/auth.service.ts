@@ -5,6 +5,7 @@ import User from "../user/user.model";
 import { ILogin } from "./auth.interface";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import config from "../../config";
 
 const register = async (payload: IUser) => {
   const result = await User.create(payload);
@@ -32,13 +33,17 @@ const login = async (payload: ILogin) => {
     phone: user.phone,
   };
 
-  const accessToken = jwt.sign(jwtPayload, "secret", {
+  const accessToken = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
     expiresIn: "1d",
   });
 
-  const refreshToken = jwt.sign(jwtPayload, "secret", {
-    expiresIn: "365d",
-  });
+  const refreshToken = jwt.sign(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    {
+      expiresIn: "365d",
+    }
+  );
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { password, ...remaining } = user.toObject();
