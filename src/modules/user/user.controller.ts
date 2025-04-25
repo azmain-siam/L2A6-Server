@@ -18,6 +18,26 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateUserInfo = catchAsync(async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  const result = await UserService.updateUserInfo(req.body, userId);
+
+  const { accessToken } = result;
+
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
+    secure: true,
+  });
+
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: "User updated successfully",
+    data: { accessToken },
+  });
+});
+
 export const UserController = {
   createUser,
+  updateUserInfo,
 };
