@@ -5,6 +5,8 @@ import Transaction from "./transaction.model";
 import stripeCheckout from "../../utils/stripe-pay";
 import { IListing } from "../listings/listing.interface";
 import Listing from "../listings/listing.model";
+import Cart from "../cart/cart.model";
+// import Cart from "../cart/cart.model";
 
 const createTransaction = async (payload: any) => {
   const { items, buyerId, amounts } = payload;
@@ -55,6 +57,8 @@ const createTransaction = async (payload: any) => {
     })
   );
 
+  // console.log(cart, "cart");
+
   // Save transaction record
   const transaction = await Transaction.create({
     transactionInfo: transactionItems,
@@ -63,6 +67,11 @@ const createTransaction = async (payload: any) => {
 
   // Create Stripe session
   const sessionId = await stripeCheckout(lineItems, transaction._id.toString());
+
+  transaction.sessionId = sessionId;
+  await transaction.save();
+
+  await Cart.findOneAndUpdate({ user: buyerId }, { items: [] }, { new: true });
 
   return {
     data: transaction,

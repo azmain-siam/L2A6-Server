@@ -10,6 +10,7 @@ interface transaction {
 export interface ITransaction {
   transactionInfo: transaction[];
   status: "pending" | "completed";
+  sessionId: string;
 }
 
 export interface IPayment {

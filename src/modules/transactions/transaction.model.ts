@@ -14,6 +14,7 @@ const transactionSchema = new Schema<ITransaction>({
     enum: ["pending", "completed"],
     default: "pending",
   },
+  sessionId: { type: String },
 });
 
 const Transaction = model<ITransaction>("Transaction", transactionSchema);
