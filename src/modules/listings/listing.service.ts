@@ -7,8 +7,9 @@ const addProduct = async (payload: IListing) => {
   return result;
 };
 
-const getAllProducts = async () => {
-  const result = await Listing.find().populate("userId");
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getAllProducts = async (filter: any) => {
+  const result = await Listing.find(filter).populate("userId");
 
   return result;
 };

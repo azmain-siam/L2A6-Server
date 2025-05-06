@@ -25,7 +25,13 @@ const addProduct = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllProducts = catchAsync(async (req: Request, res: Response) => {
-  const result = await ListingService.getAllProducts();
+  const search = (req.query.search as string) || "";
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const query: any = {};
+  if (search) {
+    query.title = { $regex: search, $options: "i" }; // case-insensitive search by product name
+  }
+  const result = await ListingService.getAllProducts(query);
 
   sendResponse(res, {
     success: true,
