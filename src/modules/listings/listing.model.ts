@@ -10,6 +10,7 @@ const listingSchema = new Schema<IListing>(
     },
     price: { type: Number, required: [true, "Product price is required"] },
     condition: { type: String },
+    category: { type: String },
     images: { type: Array },
     userId: { type: Schema.ObjectId, required: true, ref: "User" },
     status: {

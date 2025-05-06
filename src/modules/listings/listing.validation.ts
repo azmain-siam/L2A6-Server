@@ -9,6 +9,9 @@ const listingValidationSchema = z.object({
   condition: z.string({
     required_error: "Please provide the condition of the product",
   }),
+  category: z.string({
+    required_error: "Please provide the category of the product",
+  }),
   images: z.string().array().optional(),
   userId: z.string(),
 });
